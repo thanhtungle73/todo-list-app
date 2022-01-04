@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
 import './styles.scss';
+import TodoItem from '../TodoItem';
 
 TodoList.propTypes = {
     todoList: PropTypes.array,
@@ -16,32 +16,35 @@ TodoList.defaultProps = {
 * Install classnames package by run command: npm i --save classname
 * Then use classnames to pass the object includes key and value (logic)
 */
-function TodoList({ todoList, onTodoClick }) {
+function TodoList({ todoList, actions }) {
 
     // Check to see if there is onTodoClick or not?
     const handleTodoClick = (todo, index) => {
         // If there is no onTodoClick then nothing happen
-        if (!onTodoClick) return;
+        if (!actions) return;
 
         //Call onTodoClick to update the
-        onTodoClick(todo, index);
+        actions.toggleTodo(todo, index);
     };
+
+    const handleRemoveTodo = (index) => {
+        if (!actions) return;
+
+        actions.removeTodo(index);
+    }
 
     return (
         <section className="main">
-            <input id="toggle-all" className="toggle-all" type="checkbox"/>
-                <label htmlFor="toggle-all">Mark all as complete</label>
-                <ul className="todo-list">
-                    {todoList.map((todo, index) => (
-                        <li key={todo.id}
-                            className={classnames({
-                                'todo-item': true,
-                                completed: todo.status === 'completed'
-                            })}
-                            onClick={() => handleTodoClick(todo, index)}
-                        >{todo.title}</li>
-                    ))}
-                </ul>
+            <input id="toggle-all" className="toggle-all" type="checkbox"
+                onChange={(event) => actions.toggleAllTodo(event)}
+                defaultChecked={todoList.every(
+                    (todo) => todo.status === 'completed'
+                )}
+            />
+            <label htmlFor="toggle-all">Mark all as complete</label>
+            <ul className="todo-list">
+                <TodoItem todoList={todoList} onTodoItemClick={handleTodoClick} onRemoveTodoItemClick={handleRemoveTodo} />
+            </ul>
         </section>
     );
 }
