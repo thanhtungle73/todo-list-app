@@ -26,7 +26,8 @@ function TodoItem({ todoList, onTodoItemClick, onRemoveTodoItemClick }) {
                     <div className="view">
                         <input className="toggle" type="checkbox"
                             defaultChecked={todo.status === 'completed'}
-                            onChange={() => onTodoItemClick(todo, index)} />
+                            onClick={() => onTodoItemClick(todo, index)} />
+
                         <label>{todo.title}</label>
                         <button className="destroy" onClick={() => onRemoveTodoItemClick(index)}></button>
                     </div>

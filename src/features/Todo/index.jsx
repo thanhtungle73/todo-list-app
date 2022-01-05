@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import TodoList from './components/TodoList';
-import Header from './components/Header';
 import Footer from './components/Footer';
+import Header from './components/Header';
+import TodoList from './components/TodoList';
 
 TodoFeature.propTypes = {
 
@@ -31,10 +30,25 @@ function TodoFeature(props) {
     const [filteredStatus, setfilteredStatus] = useState('all');
 
     const actions = {
+        add: (event) => {
+            let value = event.target.value;
+
+            //clone current array to the new one
+            const newTodoList = [...todoList];
+
+            // toggle state
+            if (value) {
+                newTodoList.push({ id: newTodoList.length + 1, title: value, status: 'active' })
+            }
+            event.target.value = "";
+
+            //update todo list
+            setTodoList(newTodoList);
+        },
         /* Update state in below function:
            1. Get index
            2. change status
-       */
+        */
         toggleTodo: (todo, index) => {
             //clone current array to the new one
             const newTodoList = [...todoList];
@@ -44,18 +58,20 @@ function TodoFeature(props) {
                 ...newTodoList[index],
                 status: newTodoList[index].status === 'active' ? 'completed' : 'active'
             }
+
             //update todo list
             setTodoList(newTodoList);
         },
         toggleAllTodo: (event) => {
             //clone current array to the new one
             const newTodoList = [...todoList];
-            // toggle state
+
+            // toggle all states
             newTodoList.forEach((newTodo) => {
                 newTodo.status = event.target.checked ? 'completed' : 'active';
-                }
+            }
             );
-            console.log(newTodoList)
+
             //update todo list
             setTodoList(newTodoList);
         },
@@ -66,6 +82,7 @@ function TodoFeature(props) {
             // remove todo at index
             //remember: the splice will return the cut value, not remaining values
             newTodoList.splice(index, 1)
+
             //update todo list
             setTodoList(newTodoList);
         },
@@ -92,17 +109,18 @@ function TodoFeature(props) {
         }
     }
 
+    console.log('test')
     // Will filter all or filter according to status
     const renderedTodoList = todoList.filter(todo => filteredStatus === 'all' || todo.status === filteredStatus);
 
     /* 
-    * When there is any item is clicked, this will call the function to update the state
+        * When there is any item is clicked, this will call the function to update the state
     */
     return (
         <section className="todoapp">
-            <Header/>
+            <Header actions={actions} />
 
-            <TodoList todoList={renderedTodoList} actions={actions}/>
+            <TodoList renderedTodoList={renderedTodoList} actions={actions} />
 
             <Footer todoList={todoList} filteredStatus={filteredStatus} filters={filters} actions={actions} />
         </section>

@@ -16,7 +16,7 @@ TodoList.defaultProps = {
 * Install classnames package by run command: npm i --save classname
 * Then use classnames to pass the object includes key and value (logic)
 */
-function TodoList({ todoList, actions }) {
+function TodoList({ renderedTodoList, actions }) {
 
     // Check to see if there is onTodoClick or not?
     const handleTodoClick = (todo, index) => {
@@ -37,13 +37,13 @@ function TodoList({ todoList, actions }) {
         <section className="main">
             <input id="toggle-all" className="toggle-all" type="checkbox"
                 onChange={(event) => actions.toggleAllTodo(event)}
-                defaultChecked={todoList.every(
+                defaultChecked={renderedTodoList.every(
                     (todo) => todo.status === 'completed'
                 )}
             />
             <label htmlFor="toggle-all">Mark all as complete</label>
             <ul className="todo-list">
-                <TodoItem todoList={todoList} onTodoItemClick={handleTodoClick} onRemoveTodoItemClick={handleRemoveTodo} />
+                <TodoItem todoList={renderedTodoList} onTodoItemClick={handleTodoClick} onRemoveTodoItemClick={handleRemoveTodo} />
             </ul>
         </section>
     );
