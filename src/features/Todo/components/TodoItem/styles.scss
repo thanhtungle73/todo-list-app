@@ -33,6 +33,7 @@
     bottom: 0;
     margin: auto 0;
     border: none; /* Mobile Safari */
+    cursor: pointer;
     -webkit-appearance: none;
     appearance: none;
   }
@@ -79,6 +80,7 @@
     margin: auto 0;
     font-size: 30px;
     color: #cc9a9a;
+    cursor: pointer;
     margin-bottom: 11px;
     transition: color 0.2s ease-out;
   }
